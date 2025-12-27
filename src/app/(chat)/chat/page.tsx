@@ -89,7 +89,7 @@ export default function ChatPage() {
           <Leaf className="h-10 w-10 text-text-primary/50" />
         </div>
         <h2 className="mb-2 text-2xl font-semibold text-text-primary">
-          Chào mừng đến với Tâm An
+          Chào mừng !
         </h2>
         <p className="mb-8 text-center text-gray-600 max-w-md">
           Hãy bắt đầu cuộc trò chuyện mới để chia sẻ suy nghĩ của bạn.

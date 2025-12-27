@@ -10,7 +10,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Tâm An Chatbot - Mental Health Support",
+  title: "Mental Health Support Chatbot",
   description: "A calm, supportive mental health support chatbot",
 };
 

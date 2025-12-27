@@ -253,7 +253,7 @@ export default function RegisterPage() {
 
         {/* Login Link */}
         <div className="mt-6 text-center text-sm text-gray-600">
-          Already part of Tâm An?{" "}
+          Already part of us?{" "}
           <Link
             href="/login"
             className="font-medium text-[#20B2AA] hover:text-[#20B2AA]/80"

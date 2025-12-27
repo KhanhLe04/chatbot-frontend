@@ -47,7 +47,7 @@ export function ChatInput({ onSendMessage, isLoading }: ChatInputProps) {
               onChange={(e) => setMessage(e.target.value)}
               disabled={isLoading}
               onKeyDown={handleKeyPress}
-              placeholder="Hãy chia sẻ suy nghĩ của bạn với Tâm An..."
+              placeholder="Hãy chia sẻ suy nghĩ của bạn với chúng tôi..."
               className="w-full resize-none rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-400 focus:border-[#20B2AA] focus:outline-none focus:ring-2 focus:ring-[#20B2AA]/20 disabled:opacity-50 disabled:cursor-not-allowed"
               rows={1}
               style={{
@@ -74,7 +74,7 @@ export function ChatInput({ onSendMessage, isLoading }: ChatInputProps) {
 
         {/* Disclaimer */}
         <p className="mt-3 text-center text-xs text-gray-500">
-          Tâm An luôn lắng nghe, nhưng hãy nhớ tìm sự trợ giúp chuyên nghiệp nếu bạn gặp vấn đề nghiêm trọng.
+          Chúng tôi luôn lắng nghe, nhưng hãy nhớ tìm sự trợ giúp chuyên nghiệp nếu bạn gặp vấn đề nghiêm trọng.
         </p>
       </div>
     </div>
