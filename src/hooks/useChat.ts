@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { chatStore } from "@/store/chatStore";
 import { authStore } from "@/store/authStore";
+import { sessionStore } from "@/store/sessionStore";
+import { fetchSessions } from "@/lib/sessions";
 import { Message, ChatResponse, HistoryResponse } from "@/types";
 import { api } from "@/lib/api";
 
@@ -63,6 +65,18 @@ export function useChat(sessionId: string) {
                 timestamp: new Date().toISOString(),
             };
             addMessage(assistantMessage);
+
+            // 4. Update Session List if New Session
+            const currentSessions = sessionStore.getState().sessions;
+            const sessionExists = currentSessions.some(s => s.session_id === sessionId);
+            if (!sessionExists) {
+                try {
+                    const data = await fetchSessions();
+                    sessionStore.getState().setSessions(data.sessions);
+                } catch (err) {
+                    console.error("Failed to update sessions list:", err);
+                }
+            }
         } catch (error) {
             console.error("Failed to send message:", error);
             const errorMessage: Message = {

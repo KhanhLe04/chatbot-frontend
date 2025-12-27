@@ -19,9 +19,12 @@ export function Sidebar() {
   const setSessions = sessionStore((state) => state.setSessions);
   const setCurrentSessionId = sessionStore((state) => state.setCurrentSessionId);
 
-  // Fetch sessions on mount
+  // Fetch sessions on mount or when user changes
   useEffect(() => {
     const loadSessions = async () => {
+      // Wait for user to be authenticated
+      if (!user) return;
+
       try {
         setIsLoading(true);
         const response = await fetchSessions();
@@ -34,7 +37,7 @@ export function Sidebar() {
     };
 
     loadSessions();
-  }, [setSessions]);
+  }, [user, setSessions]);
 
   const handleNewChat = () => {
     // Generate a random UUID for the new session
