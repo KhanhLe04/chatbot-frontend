@@ -1,8 +1,16 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // Handle API Proxy
+  if (pathname.startsWith("/api/proxy")) {
+    const apiBaseUrl = process.env.API_BASE_URL || process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:7010";
+    const newPath = pathname.replace("/api/proxy", "");
+    console.log(`[Middleware] Proxying ${pathname} -> ${apiBaseUrl}${newPath}`);
+    return NextResponse.rewrite(new URL(newPath, apiBaseUrl));
+  }
 
   // Public routes that don't require authentication
   const publicRoutes = ["/login", "/register"];
@@ -31,13 +39,12 @@ export const config = {
   matcher: [
     /*
      * Match all request paths except for the ones starting with:
-     * - api (API routes)
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      * - public files (public folder)
      */
-    "/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };
 
