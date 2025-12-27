@@ -13,7 +13,7 @@ interface AuthState {
 }
 
 // Get base URL from environment variable (same as api.ts)
-const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:7010";
+const baseURL = "/api/proxy";
 
 export const authStore = create<AuthState>((set, get) => ({
   token: null,

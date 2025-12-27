@@ -19,8 +19,7 @@ export function ZustandProvider({ children }: ZustandProviderProps) {
     const initializeAuth = async () => {
       if (!authStore.getState().user) {
         try {
-          const baseURL =
-            process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:7010";
+          const baseURL = "/api/proxy";
           // We rely on the browser to send the HttpOnly cookie
           const userResponse = await axios.get<User>(`${baseURL}/users/me`, {
             withCredentials: true,

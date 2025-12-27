@@ -1,5 +1,7 @@
 import { create } from "zustand";
 import { Session } from "@/types";
+import { api } from "@/lib/api";
+import { authStore } from "./authStore";
 
 interface SessionState {
   sessions: Session[];
@@ -8,10 +10,11 @@ interface SessionState {
   setCurrentSessionId: (sessionId: string | null) => void;
   addSession: (session: Session) => void;
   removeSession: (sessionId: string) => void;
+  deleteSession: (sessionId: string) => Promise<void>;
   clear: () => void;
 }
 
-export const sessionStore = create<SessionState>((set) => ({
+export const sessionStore = create<SessionState>((set, get) => ({
   sessions: [],
   currentSessionId: null,
 
@@ -27,6 +30,25 @@ export const sessionStore = create<SessionState>((set) => ({
     set((state) => ({
       sessions: [session, ...state.sessions],
     }));
+  },
+
+  deleteSession: async (sessionId: string) => {
+    try {
+      const user = authStore.getState().user;
+      if (!user) return;
+
+      // Optimistic update
+      get().removeSession(sessionId);
+
+      await api.delete(`/history/${user.user_id}/${sessionId}`);
+    } catch (error) {
+      console.error("Failed to delete session:", error);
+      // Re-fetch sessions on error to revert optimistic update
+      // For now, we just log. 
+      // Ideally we would rollback, but fetching everything implies 
+      // we need to know what was deleted to put it back exactly, 
+      // or just re-fetch the list.
+    }
   },
 
   removeSession: (sessionId: string) => {

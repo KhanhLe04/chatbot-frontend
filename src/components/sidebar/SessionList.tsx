@@ -7,6 +7,7 @@ interface SessionListProps {
   sessions: Session[];
   currentSessionId: string | null;
   onSessionClick: (sessionId: string) => void;
+  onDeleteSession: (sessionId: string) => void;
 }
 
 /**
@@ -16,6 +17,7 @@ export function SessionList({
   sessions,
   currentSessionId,
   onSessionClick,
+  onDeleteSession,
 }: SessionListProps) {
   if (sessions.length === 0) {
     return (
@@ -79,6 +81,7 @@ export function SessionList({
                 isActive={session.session_id === currentSessionId}
                 timeAgo={formatTimeAgo(session.last_updated)}
                 onClick={() => onSessionClick(session.session_id)}
+                onDelete={() => onDeleteSession(session.session_id)}
               />
             ))}
           </div>
@@ -98,6 +101,7 @@ export function SessionList({
                 isActive={session.session_id === currentSessionId}
                 timeAgo={formatTimeAgo(session.last_updated)}
                 onClick={() => onSessionClick(session.session_id)}
+                onDelete={() => onDeleteSession(session.session_id)}
               />
             ))}
           </div>
@@ -117,6 +121,7 @@ export function SessionList({
                 isActive={session.session_id === currentSessionId}
                 timeAgo={formatTimeAgo(session.last_updated)}
                 onClick={() => onSessionClick(session.session_id)}
+                onDelete={() => onDeleteSession(session.session_id)}
               />
             ))}
           </div>

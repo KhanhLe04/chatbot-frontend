@@ -18,6 +18,7 @@ export function Sidebar() {
   const sessions = sessionStore((state) => state.sessions);
   const setSessions = sessionStore((state) => state.setSessions);
   const setCurrentSessionId = sessionStore((state) => state.setCurrentSessionId);
+  const currentSessionId = sessionStore((state) => state.currentSessionId);
 
   // Fetch sessions on mount or when user changes
   useEffect(() => {
@@ -96,6 +97,13 @@ export function Sidebar() {
                   : null
               }
               onSessionClick={handleSessionClick}
+              onDeleteSession={async (sessionId) => {
+                await sessionStore.getState().deleteSession(sessionId);
+                // If deleted session is current, go to new chat
+                if (sessionId === currentSessionId) {
+                  router.push("/chat");
+                }
+              }}
             />
           )}
         </div>

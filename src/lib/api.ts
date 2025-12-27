@@ -2,7 +2,7 @@ import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 import { authStore } from "@/store/authStore";
 
 // Get base URL from environment variable
-const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:7010";
+const baseURL = "/api/proxy";
 
 // Create axios instance
 export const api = axios.create({
@@ -17,7 +17,7 @@ export const api = axios.create({
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     const token = authStore.getState().token;
-    if (token && config.headers) {
+    if (token && token !== "cookie-auth" && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
