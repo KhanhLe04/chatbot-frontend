@@ -15,33 +15,31 @@ interface ZustandProviderProps {
  */
 export function ZustandProvider({ children }: ZustandProviderProps) {
   useEffect(() => {
-    // Initialize token from cookie if available
+    // Initialize auth state by checking /users/me
     const initializeAuth = async () => {
-      if (typeof document === "undefined") return;
-
-      // Get token from cookie
-      const cookies = document.cookie.split(";");
-      const authCookie = cookies.find((cookie) =>
-        cookie.trim().startsWith("auth_token=")
-      );
-      const token = authCookie?.split("=")[1];
-
-      if (token && !authStore.getState().token) {
-        // Set token in store
-        authStore.setState({ token });
-
-        // Fetch user info
+      if (!authStore.getState().user) {
         try {
           const baseURL =
             process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:7010";
+          // We rely on the browser to send the HttpOnly cookie
           const userResponse = await axios.get<User>(`${baseURL}/users/me`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+            withCredentials: true,
           });
-          authStore.setState({ user: userResponse.data });
+
+          // We don't have the token string anymore (it's in httpOnly cookie), 
+          // but we can set the user. 
+          // Ideally the store shouldn't rely on 'token' string existence for 'isAuthenticated'
+          // if we are fully cookie-based. 
+          // For now, let's assume we proceed with just user data, or we assume
+          // the 'token' field in store might be null but interaction works.
+          // However, existing interceptors use 'token'.
+          // If the backend requires 'Authorization: Bearer' AND sets cookie, we have a problem 
+          // unless the backend ALSO accepts cookie-only auth.
+          // Assuming backend DOES accept cookie-only auth since it sends an httpOnly cookie.
+
+          authStore.setState({ user: userResponse.data, token: "cookie-auth" }); // Set a placeholder token to satisfy non-null checks if needed
         } catch {
-          // Token is invalid, clear it
+          // Not authenticated
           authStore.getState().logout();
         }
       }

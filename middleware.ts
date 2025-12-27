@@ -8,8 +8,9 @@ export function middleware(request: NextRequest) {
   const publicRoutes = ["/login", "/register"];
   const isPublicRoute = publicRoutes.some((route) => pathname.startsWith(route));
 
-  // Check for auth token in cookie
-  const token = request.cookies.get("auth_token")?.value;
+  // Check for auth token in cookie (backend sets "access_token", previously manually "auth_token")
+  // We check 'access_token' primarily.
+  const token = request.cookies.get("access_token")?.value || request.cookies.get("auth_token")?.value;
 
   // If accessing protected route (not public) without token, redirect to login
   if (!isPublicRoute && !token) {

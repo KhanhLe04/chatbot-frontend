@@ -96,7 +96,7 @@ export default function ChatPage() {
           Chúng mình ở đây để lắng nghe và đồng hành cùng bạn.
         </p>
         <div className="rounded-xl bg-secondary/20 p-4 text-sm text-text-primary/80">
-          💡 Gợi ý: Nhấn vào nút "Cuộc trò chuyện mới" ở sidebar để bắt đầu
+          💡 Gợi ý: Nhấn vào nút &quot;Cuộc trò chuyện mới&quot; ở sidebar để bắt đầu
         </div>
       </div>
     );

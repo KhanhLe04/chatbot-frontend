@@ -1,15 +1,14 @@
 "use client";
 
 import { useState, KeyboardEvent } from "react";
-import { Image, Mic, Send } from "lucide-react";
+import { Image as ImageIcon, Mic, Send } from "lucide-react";
 
 interface ChatInputProps {
-  sessionId: string;
   onSendMessage: (message: string) => Promise<void>;
   isLoading?: boolean;
 }
 
-export function ChatInput({ sessionId, onSendMessage, isLoading }: ChatInputProps) {
+export function ChatInput({ onSendMessage, isLoading }: ChatInputProps) {
   const [message, setMessage] = useState("");
 
   const handleSend = async () => {
@@ -34,7 +33,7 @@ export function ChatInput({ sessionId, onSendMessage, isLoading }: ChatInputProp
           {/* Attachment Buttons */}
           <div className="flex gap-2">
             <button className="rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700">
-              <Image className="h-5 w-5" />
+              <ImageIcon className="h-5 w-5" />
             </button>
             <button className="rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700">
               <Mic className="h-5 w-5" />

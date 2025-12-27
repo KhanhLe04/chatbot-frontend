@@ -7,7 +7,7 @@ interface AuthState {
   user: User | null;
   login: (username: string, password: string) => Promise<void>;
   register: (username: string, email: string, password: string) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
   isAuthenticated: () => boolean;
   setUser: (user: User) => void;
 }
@@ -51,10 +51,7 @@ export const authStore = create<AuthState>((set, get) => ({
         user: userResponse.data,
       });
 
-      // Set cookie for middleware authentication check
-      if (typeof document !== "undefined") {
-        document.cookie = `auth_token=${access_token}; path=/; max-age=86400; SameSite=Lax`;
-      }
+      // Cookie is now HttpOnly and set by the server
     } catch (error) {
       throw error;
     }
@@ -76,16 +73,18 @@ export const authStore = create<AuthState>((set, get) => ({
     }
   },
 
-  logout: () => {
+  logout: async () => {
+    try {
+      // Call Next.js API route to clear cookies
+      await axios.post("/api/auth/logout");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+
     set({
       token: null,
       user: null,
     });
-
-    // Clear auth cookie
-    if (typeof document !== "undefined") {
-      document.cookie = "auth_token=; path=/; max-age=0; SameSite=Lax";
-    }
   },
 
   isAuthenticated: () => {

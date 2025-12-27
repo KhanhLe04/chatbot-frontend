@@ -7,11 +7,10 @@ import { ChatMessage } from "./ChatMessage";
 import { TypingIndicator } from "./TypingIndicator";
 
 interface MessageListProps {
-  sessionId: string;
   isLoading?: boolean;
 }
 
-export function MessageList({ sessionId, isLoading }: MessageListProps) {
+export function MessageList({ isLoading }: MessageListProps) {
   const messages = chatStore((state) => state.messages);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
