@@ -32,7 +32,7 @@ export default function Home() {
     checkAuth();
 
     return () => {
-      unsubscribe();
+      if (unsubscribe) unsubscribe();
     };
   }, [router]);
 

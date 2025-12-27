@@ -37,8 +37,10 @@ export function Sidebar() {
   }, [setSessions]);
 
   const handleNewChat = () => {
-    setCurrentSessionId(null);
-    router.push("/chat");
+    // Generate a random UUID for the new session
+    const newSessionId = crypto.randomUUID();
+    setCurrentSessionId(newSessionId);
+    router.push(`/chat/${newSessionId}`);
   };
 
   const handleSessionClick = (sessionId: string) => {
