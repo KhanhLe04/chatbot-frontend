@@ -6,6 +6,7 @@ interface ChatState {
   addMessage: (message: Message) => void;
   setMessages: (messages: Message[]) => void;
   clear: () => void;
+  updateLastMessage: (content: string) => void;
 }
 
 export const chatStore = create<ChatState>((set) => ({
@@ -23,6 +24,21 @@ export const chatStore = create<ChatState>((set) => ({
 
   clear: () => {
     set({ messages: [] });
+  },
+
+  updateLastMessage: (content: string) => {
+    set((state) => {
+      const messages = [...state.messages];
+      const lastMessage = messages[messages.length - 1];
+
+      if (lastMessage && lastMessage.role === "assistant") {
+        messages[messages.length - 1] = {
+          ...lastMessage,
+          content: lastMessage.content + content,
+        };
+      }
+      return { messages };
+    });
   },
 }));
 
